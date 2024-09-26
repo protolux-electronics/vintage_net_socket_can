@@ -47,7 +47,7 @@ defmodule VintageNetSocketCAN do
     %RawConfig{
       ifname: ifname,
       type: __MODULE__,
-      source_config: normalized_config,
+      source_config: config,
       required_ifnames: [],
       child_specs: [{VintageNet.Connectivity.LANChecker, ifname}],
       up_cmds: up_cmds(ifname, normalized_config),
