@@ -11,7 +11,8 @@ defmodule VintageNetSocketCAN do
     {:bitrate, :integer},
     {:sample_point, :float},
     {:loopback, :boolean},
-    {:listen_only, :boolean}
+    {:listen_only, :boolean},
+    {:restart_ms, :integer}
   ]
 
   @impl VintageNet.Technology
@@ -22,7 +23,12 @@ defmodule VintageNetSocketCAN do
       %{
         sample_point: 0.825,
         loopback: false,
-        listen_only: false
+        listen_only: false,
+        # Automatic bus-off recovery delay in milliseconds. 0 (the kernel
+        # default) disables auto-recovery, so the controller stays bus-off
+        # until the interface is manually cycled. Set a positive value (e.g.
+        # 100) to have the controller automatically rejoin the bus.
+        restart_ms: 0
       }
 
     normalized = Map.merge(default, socket_can_config)
@@ -76,7 +82,9 @@ defmodule VintageNetSocketCAN do
          "loopback",
          if(config[:loopback], do: "on", else: "off"),
          "listen-only",
-         if(config[:listen_only], do: "on", else: "off")
+         if(config[:listen_only], do: "on", else: "off"),
+         "restart-ms",
+         Integer.to_string(config[:restart_ms])
        ]},
       {:run, "ip", ["link", "set", ifname, "up"]}
     ]

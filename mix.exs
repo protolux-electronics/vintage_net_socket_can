@@ -1,7 +1,7 @@
 defmodule VintageNetSocketCAN.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.2.0"
   @github "https://github.com/protolux-electronics/vintage_net_socket_can"
 
   def project do
